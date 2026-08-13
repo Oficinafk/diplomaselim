@@ -4,20 +4,21 @@ import google.generativeai as genai
 # Conectar la clave secreta
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-st.title("Escáner de Google AI 🔍")
-st.write("Vamos a descubrir qué modelos tienes habilitados en tu cuenta.")
+st.title("Mi Primera App Web con IA 🤖")
+st.write("Escribe tu pregunta y la IA te responderá:")
 
-if st.button("Escanear Modelos"):
-    try:
-        modelos_validos = []
-        # Le pedimos a Google toda su lista interna
-        for m in genai.list_models():
-            if 'generateContent' in m.supported_generation_methods:
-                modelos_validos.append(m.name)
+mensaje = st.text_input("Tu mensaje:")
+
+if st.button("Enviar"):
+    if mensaje:
+        try:
+            # Usamos el modelo exacto que Google nos confirmó en tu lista
+            model = genai.GenerativeModel('gemini-3.5-flash')
+            
+            # Procesamos tu mensaje
+            respuesta = model.generate_content(mensaje)
+            st.success("¡Conexión exitosa!")
+            st.write(respuesta.text)
         
-        st.success("¡Búsqueda completada con éxito!")
-        st.write("Estos son los modelos que puedes usar. Envíame esta lista:")
-        st.write(modelos_validos)
-        
-    except Exception as e:
-        st.error(f"Error de conexión: {e}")
+        except Exception as e:
+            st.error(f"Error de Google: {e}")
