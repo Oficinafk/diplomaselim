@@ -12,8 +12,8 @@ mensaje = st.text_input("Tu mensaje:")
 if st.button("Enviar"):
     if mensaje:
         try:
-            # Forzamos a usar el modelo 1.5 Pro que es estable y público
-            model = genai.GenerativeModel('gemini-1.5-pro')
+            # Usamos el modelo base universal que no tiene restricciones
+            model = genai.GenerativeModel('gemini-pro')
             
             # Procesamos tu mensaje
             respuesta = model.generate_content(mensaje)
